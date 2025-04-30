@@ -21,20 +21,32 @@
            PERFORM UNTIL EXIT
       *on demande à l'utilisateur d'entrer une commande en affichant le menu
            DISPLAY "entrer une commande"
-           DISPLAY "AJOUT pour ajouter une tache"
-           DISPLAY "AFFICHER pour afficher les tache"
-           DISPLAY "SUP pour supprimer une tache"
+           DISPLAY "1 ou AJOUT pour ajouter une tache"
+           DISPLAY "2 ou AFFICHER pour afficher les tache"
+           DISPLAY "3 ou SUP pour supprimer une tache"
            DISPLAY "entrer n'importe quoi d'autre pour arrêter le " 
       -    "programme"
       *maintenant qu'on a afficher le menu, l'utilisateur peux entrer sa commande
            ACCEPT WS-COMMAND
 
+
            EVALUATE WS-COMMAND
 
       *si l'utilisateur veut ajouter une tache
-           WHEN EQUAL "AJOUT"
+           WHEN EQUAL "AJOUT" OR EQUAL "1"
            DISPLAY "Quelle est la nouvelle tache?"
+      *on enregistre la nouvelle tache de l'utilisateur
            ACCEPT WS-NEW-TASK
+      *on vérifie que la nouvelle tache n'est pas déja présente dans les taches existantes
+           IF  WS-NEW-TASK EQUAL WS-TASK1 OR 
+           WS-NEW-TASK EQUAL WS-TASK2 OR
+           WS-NEW-TASK EQUAL WS-TASK3 OR
+           WS-NEW-TASK EQUAL WS-TASK4 OR
+           WS-NEW-TASK EQUAL WS-TASK5 
+           DISPLAY "la tache est deja présente"
+           DISPLAY " "
+           ELSE
+      *on enregistre la nouvelle tache dans la première tache libre    
            IF WS-TASK1 EQUAL " "
            MOVE WS-NEW-TASK TO WS-TASK1
            ELSE 
@@ -53,19 +65,31 @@
            END-IF
            END-IF
            END-IF
+           END-IF
 
 
-      *l'utilisateur veut afficher les taches, on afficher toutes les taches, mêmes les vides
-           WHEN EQUAL "AFFICHER"
+
+      *l'utilisateur veut afficher les taches, on afficher toutes les taches sauf les taches vides
+           WHEN EQUAL "AFFICHER" OR EQUAL "2"
+           IF WS-TASK1 NOT EQUAL " "
            DISPLAY "la tache1 est " WS-TASK1
+           END-IF
+           IF WS-TASK2 NOT EQUAL " "
            DISPLAY "la tache2 est " WS-TASK2
+           END-IF
+           IF WS-TASK3 NOT EQUAL " "
            DISPLAY "la tache3 est " WS-TASK3
+           END-IF
+           IF WS-TASK4 NOT EQUAL " "
            DISPLAY "la tache4 est " WS-TASK4
+           END-IF
+           IF WS-TASK5 NOT EQUAL " "
            DISPLAY "la tache5 est " WS-TASK5
+           END-IF
            DISPLAY " "
           
       *si l'utilisateur veut supprimer une tache
-           WHEN EQUAL "SUP"
+           WHEN EQUAL "SUP" OR EQUAL "3"
       *on demande à l'utilisateur quelle tache il veut supprimer,
            DISPLAY "Quelle est le numéro de la tache a supprimé?"
            ACCEPT WS-NUMBER-TASK
@@ -87,6 +111,7 @@
 
       *dans le cas ou l'utilisateur à entrer une commande incompréhensible, on arrête le programme
            WHEN OTHER
+           DISPLAY "on arrête le programme"
            STOP RUN
 
            END-EVALUATE
