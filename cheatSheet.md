@@ -3,19 +3,20 @@
 -addition
 
 ADD variable TO variable2  ajoute la variable à variable2 et enregistre le résultat dans variable2
+
 ADD var1 var2 var3 TO var4 additionne var1 var2 et var3 et enregistre le résultat dans var4 
+ATTENTION, cela n'est vrai que si var4= 0 car si var4 = 7, var4 = var1 + var2 + var3 + 7
 
 -soustraction 
 
-SUBSTRACT var1 FROM var2   enlève var2 de var1 et enregistre le résultat dans var2
-SUBSTRACT var1 FROM var2 GIVING var3  enlève var2 de var1 et enregistre le résultat dans var3
+SUBTRACT var1 FROM var2   enlève var1 de var2 et enregistre le résultat dans var2
+SUBTRACT var1 FROM var2 GIVING var3  enlève var1 de var2 et enregistre le résultat dans var3
 
 -multiplication
 
 MULTIPLY var1 BY var2 GIVING var3   multiplie var1 par var2 et enregistre le résultat dans var3
 
 -division
-
 
 DIVIDE A BY B GIVING C REMAINDER D    divise A par B, enregistre le quotient dans C et le reste dans D
 
@@ -93,6 +94,20 @@ END-PERFORM.
 
 Cela fera les instruction tant que la condition est vrai(i LESS THAN 54)
 Il n'y a qu'un "." après le END-PERFORM et non après chaque instructions
+
+#COBOL tableau
+
+UN tableau de taille 10(avec OCCURS 10). 
+POur définir un tableau, utilisez 01, 77 ou 88
+
+01 tableau.
+	02 indice PIC 9.
+	02 case   PIC 9(2) OCCURS 10.
+
+#COBOL paragraphe
+
+Pour utiliser un paragraphe, il faut faire PERFORM NOM-PARAGRAPHE. (le "." est présent après le nom du paragraphe)
+
 
 
 #Git
