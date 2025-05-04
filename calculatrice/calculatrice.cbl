@@ -5,13 +5,11 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
-      *une calculatrice enregistre jusqu'a 9 chiffres après la ","
-
       *pour une opération mathématique, il faut au minimum 2 nombres
       *ainsi que le résultat
-       01 WS-NOMBRE1 PIC S9(20).
-       01 WS-NOMBRE2 PIC S9(20).
-       01 WS-RESULT PIC S9(20).
+       01 WS-NOMBRE1 PIC S9(4).
+       01 WS-NOMBRE2 PIC S9(4).
+       01 WS-RESULT PIC S9(4).
 
       *chaine de caractère pour éviter répétition
        01 WS-ADD PIC X(72) VALUE "entrer un nombre différent de 0 si vo
