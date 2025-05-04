@@ -13,4 +13,3 @@
 -L’utilisateur doit être guidé si mauvaise saisie(une lettre est considérée comme le nombre 0)  
 -L’utilisateur peut choisir d’afficher le détail  
 -L’utilisateur peut saisir des valeurs décimales(seul la partie entière du nombre est compris dans le calcul)  
--
