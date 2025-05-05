@@ -1,3 +1,10 @@
+#COBOL niveau hiérarchique
+
+01-49: variable de type groupe
+66: zone référencée par plusieurs mémoire(RENAME)
+77: variable autonome
+88: valeurs conditionelle(flag)
+
 #COBOL arithmétique
 
 -addition
@@ -92,7 +99,7 @@ PERFORM UNTIL condition
 instruction
 END-PERFORM.
 
-Cela fera les instruction tant que la condition est vrai(i LESS THAN 54)
+Cela fera les instruction tant que la condition est fausse(i LESS THAN 54)
 Il n'y a qu'un "." après le END-PERFORM et non après chaque instructions
 
 #COBOL tableau
