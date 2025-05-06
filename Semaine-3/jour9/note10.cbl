@@ -16,6 +16,10 @@
        01 WS-INDEX PIC 9(2).
       *variable qui enregistrera la valeur maximale du tableau
        01 WS-MAX PIC 9(2).
+      *variable qui enregistrera la valeur minimale du tableau
+       01 WS-MIN PIC 9(2).
+      *variable qui enregistrera la moyenne du tableau
+       01 WS-MEAN PIC 9(2).
 
        PROCEDURE DIVISION.
 
@@ -56,16 +60,32 @@
            MOVE WS-NOTE(1) TO WS-MAX
            PERFORM VARYING WS-INDEX FROM 2 BY 1 UNTIL WS-INDEX EQUAL 10
       *on compare notre maximum actuelle avec la valeur suivante
-           WS-MAX = FUNCTION MAX(WS-MAX, WS-NOTE(WS-INDEX))
+           COMPUTE WS-MAX = FUNCTION MAX(WS-MAX, WS-NOTE(WS-INDEX))
            END-PERFORM
+           DISPLAY "le maximum est " WS-MAX
       
       *l'utilisateur veut la note minimale
            WHEN EQUAL 3 
            DISPLAY "Vous voulez la note minimum"
+      *on récupère la première valeur du tableau
+           MOVE WS-NOTE(1) TO WS-MIN
+           PERFORM VARYING WS-INDEX FROM 2 BY 1 UNTIL WS-INDEX EQUAL 10
+      *on compare notre maximum actuelle avec la valeur suivante
+           COMPUTE WS-MIN = FUNCTION MIN(WS-MIN, WS-NOTE(WS-INDEX))
+           END-PERFORM
+           DISPLAY "le minimum est " WS-MIN
 
       *l'utilisateur veut la moyenne
            WHEN EQUAL 4 
            DISPLAY "Vous voulez la moyenne"
+      *on remet la moyenne à 0
+           MOVE 0 TO WS-MEAN
+           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX EQUAL 10
+           ADD WS-NOTE(WS-INDEX) TO WS-MEAN
+           END-PERFORM 
+           DIVIDE WS-MEAN BY 10 GIVING WS-MEAN
+           DISPLAY "la moyenne est " WS-MEAN
+
 
       *l'utilisateur veut arrêter le programme
            WHEN OTHER 
