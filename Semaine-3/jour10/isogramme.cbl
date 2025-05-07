@@ -28,6 +28,7 @@
       * on enregistre la taille du mot
            COMPUTE WS-TAILLE-MOT = FUNCTION LENGTH(
             FUNCTION TRIM(WS-MOTS)).
+      *on enregistre la taille du mot + 1
            ADD WS-TAILLE-MOT 1 TO WS-TAILLE-MOT2.
 
            PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX 
@@ -39,7 +40,7 @@
       *on cherche à partir de la position juste après la lettre si elle aparait plusieurs fois dans le mots
                PERFORM VARYING WS-INDEX2 FROM WS-NOMBRE-BOUCLE BY 1 
                UNTIL WS-INDEX2 EQUAL WS-TAILLE-MOT2
-      *si on trouve un isogramme, on affiche que le mot n'est pas un isogramme et on arrête le programme
+      *si on trouve plusieurs lettre identique, on affiche que le mot n'est pas un isogramme et on arrête le programme
                    IF WS-LETTRE-ETUDIER EQUAL WS-LETTRE(WS-INDEX2)
                        DISPLAY "ce n'est pas un isogramme"
                        STOP RUN 
