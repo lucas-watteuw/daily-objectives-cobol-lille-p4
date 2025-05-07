@@ -17,6 +17,7 @@
        01 WS-NOMBRE-BOUCLE PIC 9(2) VALUE 1.
       *la taille du mot entrée par l'utilisateur
        01 WS-TAILLE-MOT PIC 9(2).
+      *la taille du mot entrée par l'utilisateur auquel sera ajoutée 1
        01 WS-TAILLE-MOT2 PIC 9(2).
 
        PROCEDURE DIVISION.
