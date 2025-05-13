@@ -4,7 +4,7 @@
 
       *l'enviroment division est nécessaire pour lire des fichiers 
        ENVIRONMENT DIVISION.
-      *la section qui gère les entrés et sorties de fihcier du programme
+      *la section qui gère les entrés et sorties de fichier du programme
        INPUT-OUTPUT SECTION.
       *section pour donnée un FD(file descriptor) à un fichier 
       *pour qu'on puisse le lire un peu plus tard
@@ -27,8 +27,6 @@
            05 F-DATE   PIC X(8).
 
 
-
-
        WORKING-STORAGE SECTION.
 
       *index qui servira à parcourir les tableaux
@@ -47,6 +45,9 @@
        01 WS-JOUR PIC 99.
        01 WS-MOIS PIC 99.
        01 WS-ANNEE PIC 9(4).
+
+      *le nom chercher par l'utilisateur
+       01 WS-NOM-CHERCHER PIC X(15).
 
        PROCEDURE DIVISION.
 
@@ -79,9 +80,28 @@
       *on met les jours, mois et année dans une variable spécifique 
       *pour afficher la date
            MOVE WS-DATE(WS-INDEX)(3:2) TO WS-JOUR
+      *MOVE WS-DATE(WS-INDEX)(3:2) lit à partir du 3ème caractères les 2 qui suivent 
+      *cela signifie que le caractère 3 et 4 seront placés dans WS-JOUR
            MOVE WS-DATE(WS-INDEX)(1:2) TO WS-MOIS
            MOVE WS-DATE(WS-INDEX)(5:4) TO WS-ANNEE
            DISPLAY "DATE : " WS-JOUR "/" WS-MOIS "/" WS-ANNEE
+           END-PERFORM.
+
+      *PARTIE 3
+
+           DISPLAY "quelle est le nom de la personne recherché?".
+           ACCEPT WS-NOM-CHERCHER.
+
+      *on cherche le nom de la personne dans le tableau
+           PERFORM VARYING WS-INDEX FROM 1 BY 1 UNTIL WS-INDEX EQUAL 11 
+              IF WS-NOM-CHERCHER EQUAL WS-NOM(WS-INDEX)
+                 DISPLAY "on a trouvé une personne"
+                 DISPLAY "Son prénom est " WS-PRENOM(WS-INDEX)
+      *on calcule l'age de la personne, on récupère son année de naissance
+                 MOVE WS-DATE(WS-INDEX)(5:4) TO WS-ANNEE
+                 SUBTRACT WS-ANNEE FROM 2025 GIVING WS-ANNEE
+                 DISPLAY "Cette personne a " WS-ANNEE " ans."
+              END-IF
            END-PERFORM.
 
            STOP RUN.

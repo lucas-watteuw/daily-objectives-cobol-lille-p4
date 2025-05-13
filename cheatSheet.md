@@ -116,6 +116,57 @@ POur définir un tableau, utilisez 01, 77 ou 88
 Pour utiliser un paragraphe, il faut faire PERFORM NOM-PARAGRAPHE. (le "." est présent après le nom du paragraphe)
 
 
+#COBOL lire fichier
+
+Il faut commencer par définit un ENVIRONMENT DIVISION de la manière suivante
+
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE CONTROL.
+	SELECT FILEDESCRIPTOR ASSIGN TO NOMFICHIER
+		ORGANIZATION IS LINE SEQUENTIAL.
+
+FILEDESCRIPTOR est le descriptor qui nous permettra de lire le fichier, il sera à remettre dans la FILE SECTION de la DATA DIVISION
+NOMFICHIER est le nom du fichier(si le nom est "personne.txt" par exemple, il faudra mettre ASSIGN TO "personne.txt")
+ORGANIZATION IS LINE SEQUENTIAL signifie qu'on lit le fichier de gauche à droite puis de haut en bas.
+
+Maintenant, déclarons la DATA DIVISION 
+
+DATA DIVISION.
+FILE SECTION
+FS FILEDESCRIPTOR
+01 LIGNE.
+	05 F-NOM    PIC X(15).
+        05 F-PRENOM PIC X(15).
+        05 F-DATE   PIC X(8).
+        
+le FILEDESCRIPTOR de la DATA DIVISION est le même que celle de l'EnVIRONMENT DIVISION
+01 LIGNE avec ses 3 champs nous intéressent. 
+Le premier champ F-NOM signifie que les 15 premiers caractères de la ligne sont des noms
+Le second champ F-PRENOM signifie que les 15 caractères suivant sont le prénoms
+le dernier champ F-DATE signifie que les 8 caractère encores après correspondent à un date
+s'il y a des caractère après les 38 premiers caractères, ils ne seront pas traités par ce programme cobol
+
+Il y a des choses spécifique à faire dans la PROCEDURE DIVISION pour les fichiers.
+OPEN INPUT FILEDESCRIPTOR.
+cette commande ouvre le fichier en mode input ce qui signifie qu'on va lire et non écrire dans ce fichier.
+
+à la fin, il faut fermer le fichier.
+CLOSE FILEDESCRIPTOR.
+
+Mais avant de fermer le fichier, on aimerai le lire
+
+PERFORM UNTIL condition qui n'est pas vérifié(une variable qui n'est pas égale à "F" par exemple)
+	READ FILEDESCRIPTOR
+		AT END
+			changer la variable à "F"
+		NOT AT END
+			instruction
+	END-READ
+END-PERFORM.
+
+les champs F- sont déjà remplis lors du READ FILEDESCRIPTOR
+on peut les mettres dans un tableau par exemple avec un MOVE(si c'est ce que vous voulez faire, vous aurez besoin d'un index à incrémentez par vous-mêmes)
 
 #Git
 

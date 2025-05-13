@@ -4,7 +4,7 @@
 
       *l'enviroment division est nécessaire pour lire des fichiers 
        ENVIRONMENT DIVISION.
-      *la section qui gère les entrés et sorties de fihcier du programme
+      *la section qui gère les entrés et sorties de fichier du programme
        INPUT-OUTPUT SECTION.
       *section pour donnée un FD(file descriptor) à un fichier 
       *pour qu'on puisse le lire un peu plus tard
