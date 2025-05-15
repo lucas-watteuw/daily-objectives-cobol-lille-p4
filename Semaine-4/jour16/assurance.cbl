@@ -12,6 +12,10 @@
            SELECT ASSURANCE-SORTIE ASSIGN TO "rapport-assurance.dat"
               ORGANIZATION IS LINE SEQUENTIAL.
 
+           SELECT ASSURANCE-SORTIE-UNIQUE 
+           ASSIGN TO "rapport-assurance-unique.dat"
+              ORGANIZATION IS LINE SEQUENTIAL.
+
 
        DATA DIVISION.
        FILE SECTION.
@@ -40,14 +44,43 @@
        FD ASSURANCE-SORTIE.
        01 LIGNE-ASSURANCE-SORTIE.
            05 CODE-CONTRAT-SORTIE PIC 9(8).
+           05 FILLER              PIC X.
            05 NOM-CONTRAT-SORTIE  PIC X(13).
+           05 FILLER              PIC X(2).
            05 NOM-PRODUIT-SORTIE  PIC X(14).
+           05 FILLER              PIC X.
            05 NOM-CLIENT-SORTIE   PIC X(41).
-           05 STATUT-SORTIE       PIC X(8). 
+           05 FILLER              PIC X.
+           05 STATUT-SORTIE       PIC X(8).
+           05 FILLER              PIC X. 
            05 DATE-DEBUT-SORTIE   PIC X(10).
+           05 FILLER              PIC X.
            05 DATE-FIN-SORTIE     PIC X(10).
+           05 FILLER              PIC X.
            05 MONTANT-SORTIE      PIC X(8).
+           05 FILLER              PIC X.
            05 DEVISE-SORTIE       PIC X.
+
+       FD ASSURANCE-SORTIE-UNIQUE.
+       01 LIGNE-ASSURANCE-SORTIE-UNIQUE.
+           05 CODE-CONTRAT-SORTIE-UNIQUE PIC 9(8).
+           05 FILLER                     PIC X.
+           05 NOM-CONTRAT-SORTIE-UNIQUE  PIC X(13).
+           05 FILLER                     PIC X(2).
+           05 NOM-PRODUIT-SORTIE-UNIQUE  PIC X(14).
+           05 FILLER                     PIC X.
+           05 NOM-CLIENT-SORTIE-UNIQUE   PIC X(41).
+           05 FILLER                     PIC X.
+           05 STATUT-SORTIE-UNIQUE       PIC X(8).
+           05 FILLER                     PIC X. 
+           05 DATE-DEBUT-SORTIE-UNIQUE   PIC X(10).
+           05 FILLER                     PIC X.
+           05 DATE-FIN-SORTIE-UNIQUE     PIC X(10).
+           05 FILLER                     PIC X.
+           05 MONTANT-SORTIE-UNIQUE      PIC X(8).
+           05 FILLER                     PIC X.
+           05 DEVISE-SORTIE-UNIQUE       PIC X.
+       
        
 
        WORKING-STORAGE SECTION.
@@ -71,6 +104,14 @@
 
       *condition pour arrêter de lire le fichier 
        01 WS-CONDITION           PIC X VALUE "C".
+
+      *variable pour pouvoir changer le format de la date
+       01 WS-ANNEE PIC 9(4).
+       01 WS-JOUR PIC 9(2).
+       01 WS-MOIS PIC 9(2).
+
+      *nombre entré par l'utilisateur
+       01 WS-NOMBRE-UTILISATEUR PIC 9(2).
 
        PROCEDURE DIVISION.
 
@@ -149,7 +190,9 @@
       *on créer une en-tête pour le ficher de sortie
            
            MOVE "CODE    " TO CODE-CONTRAT-SORTIE.
-           MOVE "NOM    " TO NOM-CONTRAT-SORTIE.
+           MOVE "NOM          " TO NOM-CONTRAT-SORTIE.
+           MOVE "NOM   Produit" TO NOM-PRODUIT-SORTIE.
+           MOVE "NOM   CLient" TO NOM-CLIENT-SORTIE.
            MOVE "STATUT  " TO STATUT-SORTIE.   
            MOVE "DEBUT  " TO DATE-DEBUT-SORTIE.
            MOVE "FIN  " TO DATE-FIN-SORTIE.       
@@ -164,8 +207,26 @@
            MOVE WS-NOM-PRODUIT(3) TO NOM-PRODUIT-SORTIE.
            MOVE WS-NOM-CLIENT(3) TO NOM-CLIENT-SORTIE.
            MOVE WS-STATUT(3) TO STATUT-SORTIE.
-           MOVE WS-DATE-DEBUT(3) TO DATE-DEBUT-SORTIE. 
-           MOVE WS-DATE-FIN(3) TO DATE-FIN-SORTIE.
+
+      *on change le format de la date de début
+           MOVE WS-DATE-DEBUT(3)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-DEBUT(3)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-DEBUT(3)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-DEBUT-SORTIE. 
+
+      *on change le format de la date de fin
+           MOVE WS-DATE-FIN(3)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-FIN(3)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-FIN(3)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-FIN-SORTIE. 
+
+           
            MOVE WS-MONTANT(3) TO MONTANT-SORTIE.
            MOVE WS-DEVISE(3) TO DEVISE-SORTIE.
            WRITE LIGNE-ASSURANCE-SORTIE.
@@ -176,8 +237,26 @@
            MOVE WS-NOM-PRODUIT(7) TO NOM-PRODUIT-SORTIE.
            MOVE WS-NOM-CLIENT(7) TO NOM-CLIENT-SORTIE.
            MOVE WS-STATUT(7) TO STATUT-SORTIE.
-           MOVE WS-DATE-DEBUT(7) TO DATE-DEBUT-SORTIE. 
-           MOVE WS-DATE-FIN(7) TO DATE-FIN-SORTIE.
+
+      *on change le format de la date de début
+           MOVE WS-DATE-DEBUT(7)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-DEBUT(7)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-DEBUT(7)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-DEBUT-SORTIE. 
+
+      *on change le format de la date de fin
+           MOVE WS-DATE-FIN(7)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-FIN(7)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-FIN(7)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-FIN-SORTIE. 
+
+
            MOVE WS-MONTANT(7) TO MONTANT-SORTIE.
            MOVE WS-DEVISE(7) TO DEVISE-SORTIE.
            WRITE LIGNE-ASSURANCE-SORTIE.
@@ -186,5 +265,74 @@
            CLOSE ASSURANCE-SORTIE.
 
            DISPLAY "Fin du traitement – 2 enregistrements exportés"
+
+      *étape bonus
+
+      *on demande à l'utilisateur un nombre entre 1 et 36
+           DISPLAY "veuillez entrer un nombre entre 1 et 36".
+           ACCEPT WS-NOMBRE-UTILISATEUR.
+      *l'utilisateur a rentré un mauvais nombre, on arrête le programme
+           IF WS-NOMBRE-UTILISATEUR GREATER THAN 36 
+           OR WS-NOMBRE-UTILISATEUR LESS THAN 1 
+              DISPLAY "vous n'avez pas respecté la consigne"
+              STOP RUN
+           END-IF.
+   
+      *on ouvre le fichier de sorite unique
+
+           OPEN OUTPUT ASSURANCE-SORTIE-UNIQUE.
+           
+      *on créer une en-tête pour le ficher de sortie
+           
+           MOVE "CODE    " TO CODE-CONTRAT-SORTIE-UNIQUE.
+           MOVE "NOM          " TO NOM-CONTRAT-SORTIE-UNIQUE.
+           MOVE "NOM   Produit" TO NOM-PRODUIT-SORTIE-UNIQUE.
+           MOVE "NOM   CLient" TO NOM-CLIENT-SORTIE-UNIQUE.
+           MOVE "STATUT  " TO STATUT-SORTIE-UNIQUE.   
+           MOVE "DEBUT  " TO DATE-DEBUT-SORTIE-UNIQUE.
+           MOVE "FIN  " TO DATE-FIN-SORTIE-UNIQUE.       
+           MOVE "MONTANT  " TO MONTANT-SORTIE-UNIQUE.
+           MOVE  "%" TO DEVISE-SORTIE-UNIQUE. 
+           WRITE LIGNE-ASSURANCE-SORTIE-UNIQUE.
+
+      *on écrit la ligne choisit par l'utilisateur
+
+           MOVE WS-CODE-CONTRAT(WS-NOMBRE-UTILISATEUR) 
+           TO CODE-CONTRAT-SORTIE-UNIQUE. 
+           MOVE WS-NOM-CONTRAT(WS-NOMBRE-UTILISATEUR)
+           TO NOM-CONTRAT-SORTIE-UNIQUE.
+           MOVE WS-NOM-PRODUIT(WS-NOMBRE-UTILISATEUR) 
+           TO NOM-PRODUIT-SORTIE-UNIQUE.
+           MOVE WS-NOM-CLIENT(WS-NOMBRE-UTILISATEUR) 
+           TO NOM-CLIENT-SORTIE-UNIQUE.
+           MOVE WS-STATUT(WS-NOMBRE-UTILISATEUR) TO STATUT-SORTIE-UNIQUE.
+
+      *on change le format de la date de début
+           MOVE WS-DATE-DEBUT(WS-NOMBRE-UTILISATEUR)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-DEBUT(WS-NOMBRE-UTILISATEUR)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-DEBUT(WS-NOMBRE-UTILISATEUR)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-DEBUT-SORTIE-UNIQUE. 
+
+      *on change le format de la date de fin
+           MOVE WS-DATE-FIN(WS-NOMBRE-UTILISATEUR)(1:4) TO WS-ANNEE.
+           MOVE WS-DATE-FIN(WS-NOMBRE-UTILISATEUR)(5:2) TO WS-JOUR.
+           MOVE WS-DATE-FIN(WS-NOMBRE-UTILISATEUR)(7:2) TO WS-MOIS.
+
+
+           MOVE FUNCTION CONCATENATE(WS-JOUR, "/", WS-MOIS, "/", 
+           WS-ANNEE) TO DATE-FIN-SORTIE-UNIQUE. 
+
+           
+           MOVE WS-MONTANT(WS-NOMBRE-UTILISATEUR) 
+           TO MONTANT-SORTIE-UNIQUE.
+           MOVE WS-DEVISE(WS-NOMBRE-UTILISATEUR) 
+           TO DEVISE-SORTIE-UNIQUE.
+           WRITE LIGNE-ASSURANCE-SORTIE-UNIQUE.
+
+      *on ferme le fichier
+           CLOSE ASSURANCE-SORTIE-UNIQUE.
 
            STOP RUN.
