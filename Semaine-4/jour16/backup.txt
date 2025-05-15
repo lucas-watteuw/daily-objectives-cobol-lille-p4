@@ -1,0 +1,26 @@
+ *on parcourt le tableau on affichant tout ce qu'il contient
+      *36 car il y a 36 ligne dans le tableau ainsi que dans le fichier
+           PERFORM VARYING WS-INDEX-TABLEAU FROM 1 BY 1 UNTIL 
+           WS-INDEX-TABLEAU GREATER THAN 36
+              DISPLAY WS-CODE-CONTRAT(WS-INDEX-TABLEAU) " "
+      -       WS-NOM-CONTRAT(WS-INDEX-TABLEAU) " "
+      -       WS-NOM-PRODUIT(WS-INDEX-TABLEAU) " "
+      -       WS-NOM-CLIENT(WS-INDEX-TABLEAU) " "
+      -       WS-STATUT(WS-INDEX-TABLEAU) " "
+      -       WS-DATE-DEBUT(WS-INDEX-TABLEAU) " "
+      -       WS-DATE-FIN(WS-INDEX-TABLEAU) " "
+      -       WS-MONTANT(WS-INDEX-TABLEAU) " "
+      -       WS-DEVISE(WS-INDEX-TABLEAU) " "
+           
+           END-PERFORM.
+
+
+
+           MOVE "CODE" TO CODE-CONTRAT-SORTIE.
+           MOVE "NOM" TO NOM-CONTRAT-SORTIE.
+           MOVE "STATUT" TO STATUT-SORTIE.   
+           MOVE "DEBUT" TO DATE-DEBUT-SORTIE.
+           MOVE "FIN" TO DATE-FIN-SORTIE.       
+           MOVE "MONTANT" TO MONTANT-SORTIE.
+           MOVE  "%" TO DEVISE-SORTIE. 
+           WRITE LIGNE-ASSURANCE-SORTIE.
