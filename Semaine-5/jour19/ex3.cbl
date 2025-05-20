@@ -2,7 +2,24 @@
        PROGRAM-ID. ex3.
        AUTHOR. lucas.
 
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+       	SELECT CLASSES ASSIGN TO "classes-tri.txt"
+       		ORGANIZATION IS LINE SEQUENTIAL.
+
+
        DATA DIVISION.
+
+       FILE SECTION.
+       FD CLASSES.
+      *l'organisation des informations du fichier classes-tri.txt
+       01 LIGNE.
+           05 LIGNE-CLASSE PIC X(5).
+      *     05 FILLER PIC X(2) VALUE SPACES.
+           05 LIGNE-NOM PIC X(16).
+      *     05 FILLER PIC X VALUE SPACES.
+           05 LIGNE-PRENOM PIC X(15).
       
        WORKING-STORAGE SECTION. 
 
@@ -58,6 +75,37 @@
               UNTIL WS-INDEX-LIGNE EQUAL 4
                  DISPLAY WS-ELEVE(2, WS-INDEX-LIGNE)
            END-PERFORM.
+
+      *on ouvre le fichier de sortie
+           OPEN OUTPUT CLASSES.
+      *on écrit les éléments du tableau dans le fichier de sortie
+
+      *on commence par les éléves de cm1
+           PERFORM VARYING WS-INDEX-LIGNE FROM 1 BY 1 
+              UNTIL WS-INDEX-LIGNE EQUAL 4
+      *on initialise les valeurs à écrire
+              MOVE "CM1" TO LIGNE-CLASSE
+              MOVE WS-NOM-ELEVE(1,WS-INDEX-LIGNE) TO LIGNE-NOM
+              MOVE WS-PRENOM-ELEVE(1,WS-INDEX-LIGNE) TO LIGNE-PRENOM
+      *on écrit dans le fichier
+              WRITE LIGNE
+           END-PERFORM.
+
+      *on commence par les éléves de cm2
+           PERFORM VARYING WS-INDEX-LIGNE FROM 1 BY 1 
+              UNTIL WS-INDEX-LIGNE EQUAL 4
+      *on initialise les valeurs à écrire
+              MOVE "CM2" TO LIGNE-CLASSE
+              MOVE WS-NOM-ELEVE(2,WS-INDEX-LIGNE) TO LIGNE-NOM
+              MOVE WS-PRENOM-ELEVE(2,WS-INDEX-LIGNE) TO LIGNE-PRENOM
+      *on écrit dans le fichier
+              WRITE LIGNE
+           END-PERFORM.
+           
+
+
+      *on a fini d'écrire, on ferme le fichier 
+           CLOSE CLASSES.
 
           
 
