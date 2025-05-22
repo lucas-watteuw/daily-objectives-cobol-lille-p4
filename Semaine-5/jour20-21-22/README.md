@@ -13,4 +13,16 @@ Cette solution permet de lié les éléves avec leur note, choses qui n'aurait p
 si 2 tableaux avaient été utiliser.
 
 Quand on lit une note, on ne lit que des PIC X car avec des PIC 9V9 par exemple, la ","
-est considéré comme un nombre et non comme un séparateur entre le partie entière et décimale.
+est considéré comme un nombre et non comme un séparateur entre la partie entière et décimale.
+
+Concernant le calcul de la moyenne d'un éléve, on commence par additioner les notes multiplés par leur 
+coefficient, puis une fois que cette somme est réalisé, on divise par la somme des coefficient des 
+différentes matière. Aucune utilisation de ROUNDED n'a été faite.
+
+Les étudiants sont triés par ordre alphabétique.
+
+reste à faire:
+
+- La détection de doublon n'a pas été faite non plus 
+- aucun test sur fichier vide ou mal formée 
+

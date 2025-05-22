@@ -106,7 +106,8 @@
            05 STUDENT OCCURS 1 TO 999 TIMES DEPENDING ON STUDENT-LGHT.
                10 S-FIRSTNAME  PIC X(06).      
                10 S-LASTNAME   PIC X(07).
-               10 S-AGE        PIC 9(02).         
+               10 S-AGE        PIC 9(02). 
+               10 S-AVERAGE    PIC 999V99 VALUE 0. *>la moyenne de l'éléve        
       *le nombre de note de l'étudiant
                10 COURSE-LGHT  PIC 9(03) VALUE 0. 
       *on rajoute les notes de l'éléve, 999 TIMES car on ne peux pas 
@@ -119,6 +120,13 @@
       *index pour parcourir tableau
        01 WS-INDEX1 PIC 9(3).
        01 WS-INDEX2 PIC 9(3).
+
+      *somme des coefficient pour calcul de moyenne
+       01 WS-SUM-COEF PIC 99V99.
+
+      *variable pour contenir la multiplication du coef et de la note
+       01 WS-COEF-NOTE PIC 99V99.
+      
 
       ****************************************************************** 
       *    
@@ -139,8 +147,8 @@
       *so la ligne contient le nom d'un étudiant
                  IF REC-F-INPUT-2 EQUAL "01"
                     ADD 1 TO STUDENT-LGHT *>on incrémente le nombre d'étudiants
-                    MOVE R-LASTNAME TO S-FIRSTNAME(STUDENT-LGHT)
-                    MOVE R-FIRSTNAME TO S-LASTNAME(STUDENT-LGHT)
+                    MOVE R-FIRSTNAME TO S-FIRSTNAME(STUDENT-LGHT)
+                    MOVE R-LASTNAME TO S-LASTNAME(STUDENT-LGHT)
                     MOVE R-AGE TO S-AGE(STUDENT-LGHT)
       *si la ligne contient une matière
                  ELSE
@@ -159,19 +167,36 @@
            CLOSE F-INPUT.
 
 
+      *on calcule la moyenne de chaque éléve
+           PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
+           UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT
+      *on réinitialise la somme des coef
+              MOVE 0 TO WS-SUM-COEF
+      *on commence par additionner les notes en n'oubliant de les multiplier par leur coef
+              PERFORM VARYING WS-INDEX2 FROM 1 BY 1 
+              UNTIL WS-INDEX2 GREATER THAN COURSE-LGHT(WS-INDEX1)
+      *on incrémente la somme des coefficient        
+              ADD COEFFICIENT(WS-INDEX1, WS-INDEX2) TO WS-SUM-COEF
+              MULTIPLY COEFFICIENT(WS-INDEX1, WS-INDEX2) BY 
+              GRADE-NOTE(WS-INDEX1, WS-INDEX2) 
+              GIVING WS-COEF-NOTE
+              ADD WS-COEF-NOTE TO S-AVERAGE (WS-INDEX1)
+              END-PERFORM    
+              DIVIDE S-AVERAGE(WS-INDEX1) BY WS-SUM-COEF 
+              GIVING S-AVERAGE(WS-INDEX1)
+           END-PERFORM.
+
+        
+      *on tri les éléves par ordre alphabétique
+           SORT STUDENT ON ASCENDING S-LASTNAME,
+           ASCENDING S-FIRSTNAME.
+
       *on affiche les éléves avec leur notes
            PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
            UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT 
       *on affiche les éléves
-              DISPLAY S-FIRSTNAME(WS-INDEX1) " " S-LASTNAME(WS-INDEX1)    
+              DISPLAY S-LASTNAME(WS-INDEX1) " " S-FIRSTNAME(WS-INDEX1)    
               DISPLAY S-AGE(WS-INDEX1)  
-      *on affiche leur note
-              PERFORM VARYING WS-INDEX2 FROM 1 BY 1 
-              UNTIL WS-INDEX2 GREATER THAN COURSE-LGHT(WS-INDEX1)
-                 DISPLAY "matière: " LIBELLE(WS-INDEX1, WS-INDEX2)
-                 DISPLAY "coef : " COEFFICIENT(WS-INDEX1, WS-INDEX2)
-                 DISPLAY "note: " GRADE-NOTE(WS-INDEX1, WS-INDEX2)
-              END-PERFORM
            END-PERFORM.
 
            STOP RUN.
