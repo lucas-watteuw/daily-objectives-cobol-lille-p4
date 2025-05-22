@@ -74,10 +74,8 @@
        01  REC-COURSE. 
       *son r-c-key devrait être 02
            03 R-C-KEY          PIC 9(02).       
-           03 R-LABEL          PIC X(21).       
-      *     03 R-COEF           PIC 9V9.      
+           03 R-LABEL          PIC X(21).             
            03 R-COEF           PIC X(3).  
-      *     03 R-GRADE          PIC 99V99. 
            03 R-GRADE          PIC X(5).       
 
       *la sortie ne contient qu'un PIC X de 250 caractères
@@ -191,12 +189,32 @@
            SORT STUDENT ON ASCENDING S-LASTNAME,
            ASCENDING S-FIRSTNAME.
 
-      *on affiche les éléves avec leur notes
+      *on affiche les éléves 
            PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
            UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT 
-      *on affiche les éléves
               DISPLAY S-LASTNAME(WS-INDEX1) " " S-FIRSTNAME(WS-INDEX1)    
               DISPLAY S-AGE(WS-INDEX1)  
            END-PERFORM.
+
+      *on ouvre le fichier de sortie
+           OPEN OUTPUT F-OUTPUT.
+          
+      *on écrit dans le tableau le nom, prénom et moyenne de l'éléve
+           PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
+           UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT
+      *on initialise la ligne à écrire comme une chaine ne contenant que des espaces
+              MOVE SPACES TO REC-F-OUTPUT
+      *on écrit le nom, prénom, age et moyenne
+              STRING S-LASTNAME(WS-INDEX1) " " S-FIRSTNAME(WS-INDEX1) 
+              " " S-AVERAGE(WS-INDEX1)(1:3) ","S-AVERAGE(WS-INDEX1)(4:2)
+              SPACES 
+              INTO REC-F-OUTPUT
+              END-STRING
+              WRITE REC-F-OUTPUT
+           END-PERFORM.
+
+
+      *on ferme le fichier de sortie
+           CLOSE F-OUTPUT.
 
            STOP RUN.
