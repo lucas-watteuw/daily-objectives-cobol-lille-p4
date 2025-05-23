@@ -17,12 +17,16 @@ est considéré comme un nombre et non comme un séparateur entre la partie enti
 
 Concernant le calcul de la moyenne d'un éléve, on commence par additioner les notes multiplés par leur 
 coefficient, puis une fois que cette somme est réalisé, on divise par la somme des coefficient des 
-différentes matière. Aucune utilisation de ROUNDED n'a été faite.
+différentes matière. 
 
 Les étudiants sont triés par ordre alphabétique.
 
+Pour la détection de doublon(éléves qui ont le même nom de famille), on compare le nom de famille
+avec le suivant(ce qui est possible car les étudiants sont triés par ordre alphabétique), si ils sont
+identiques, on remplace le dernier caractère par un nombre(l'indice de parcours de tableau).
+
 reste à faire:
 
-- La détection de doublon n'a pas été faite non plus 
 - aucun test sur fichier vide ou mal formée 
-
+- calcul des moyennes des matière
+- écriture des moyennes par matière dans le fichier de sortie 

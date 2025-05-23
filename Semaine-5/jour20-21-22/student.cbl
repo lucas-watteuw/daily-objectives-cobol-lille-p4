@@ -164,6 +164,21 @@
       *on ferme le fichier d'entrée 
            CLOSE F-INPUT.
 
+      *on tri les éléves par ordre alphabétique
+           SORT STUDENT ON ASCENDING S-LASTNAME,
+           ASCENDING S-FIRSTNAME.
+
+      *on regarde maintenant s'il y a des éléves qui ont le même nom de
+      *famille, si oui, on remplace le dernier caractère du nom de 
+      *famille par un nombre
+           
+           PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
+           UNTIL WS-INDEX1 EQUAL STUDENT-LGHT 
+              IF S-LASTNAME(WS-INDEX1) EQUAL S-LASTNAME(WS-INDEX1 + 1)
+                 MOVE WS-INDEX1 TO S-LASTNAME(WS-INDEX1)(7:1)
+              END-IF
+           END-PERFORM.
+
 
       *on calcule la moyenne de chaque éléve
            PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
@@ -180,25 +195,20 @@
               GIVING WS-COEF-NOTE
               ADD WS-COEF-NOTE TO S-AVERAGE (WS-INDEX1)
               END-PERFORM    
-              DIVIDE S-AVERAGE(WS-INDEX1) BY WS-SUM-COEF 
-              GIVING S-AVERAGE(WS-INDEX1)
+              COMPUTE S-AVERAGE(WS-INDEX1) ROUNDED = 
+              S-AVERAGE(WS-INDEX1) / WS-SUM-COEF
            END-PERFORM.
 
-        
-      *on tri les éléves par ordre alphabétique
-           SORT STUDENT ON ASCENDING S-LASTNAME,
-           ASCENDING S-FIRSTNAME.
-
-      *on affiche les éléves 
-           PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
-           UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT 
-              DISPLAY S-LASTNAME(WS-INDEX1) " " S-FIRSTNAME(WS-INDEX1)    
-              DISPLAY S-AGE(WS-INDEX1)  
-           END-PERFORM.
 
       *on ouvre le fichier de sortie
            OPEN OUTPUT F-OUTPUT.
-          
+
+      *on initialise la ligne à écrire comme une chaine ne contenant que des espaces
+              MOVE SPACES TO REC-F-OUTPUT
+      *on écrit l'entête du fichier
+           MOVE "NOM     PRENOM MOYENNE" TO REC-F-OUTPUT.
+           WRITE REC-F-OUTPUT.
+
       *on écrit dans le tableau le nom, prénom et moyenne de l'éléve
            PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
            UNTIL WS-INDEX1 GREATER THAN STUDENT-LGHT
