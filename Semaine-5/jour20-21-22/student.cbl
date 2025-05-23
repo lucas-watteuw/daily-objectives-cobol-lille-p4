@@ -24,7 +24,7 @@
       *le fichier à lire, il contient les informations sur les éléves
       *leur nom et notes dans chaque matière
            SELECT F-INPUT
-               ASSIGN TO 'input.dat'
+               ASSIGN TO 'input-test2.dat'
                ACCESS MODE IS SEQUENTIAL
                ORGANIZATION IS LINE SEQUENTIAL
                FILE STATUS IS F-INPUT-STATUS. 
@@ -124,7 +124,10 @@
 
       *variable pour contenir la multiplication du coef et de la note
        01 WS-COEF-NOTE PIC 99V99.
-      
+
+      *nombre de doublon
+       01 WS-NOMBRE-DOUBLON PIC 9 VALUE 0.
+
 
       ****************************************************************** 
       *    
@@ -175,7 +178,11 @@
            PERFORM VARYING WS-INDEX1 FROM 1 BY 1 
            UNTIL WS-INDEX1 EQUAL STUDENT-LGHT 
               IF S-LASTNAME(WS-INDEX1) EQUAL S-LASTNAME(WS-INDEX1 + 1)
-                 MOVE WS-INDEX1 TO S-LASTNAME(WS-INDEX1)(7:1)
+                 MOVE WS-NOMBRE-DOUBLON TO S-LASTNAME(WS-INDEX1)(7:1)
+                 STRING S-LASTNAME(WS-INDEX1)(1:6) WS-NOMBRE-DOUBLON  
+                 INTO S-LASTNAME(WS-INDEX1)
+                 END-STRING
+                 ADD 1 TO WS-NOMBRE-DOUBLON
               END-IF
            END-PERFORM.
 
