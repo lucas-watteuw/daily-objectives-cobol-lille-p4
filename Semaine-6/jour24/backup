@@ -1,0 +1,34 @@
+export COBCPY=~/Images/test-ocesql/Open-COBOL-ESQL/copy
+
+export LD_PRELOAD=/usr/local/lib/libocesql.so
+
+export COB_LDFLAGS=-Wl,--no-as-needed
+ocesql program.cbl program.cob
+cobc -locesql -x -v -o  run  program.cob
+
+
+CREATE TABLE utilisateur (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    age integer NOT NULL,
+    telephone numeric(10) NOT NULL
+);
+
+ocesql sql2.cbl sql2.cob
+cobc -x -locesql -o run2 sql2.cob
+
+CREATE TABLE individus (
+    id serial PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    telephone VARCHAR(10) NOT NULL
+);
+
+
+ocesql changesq.cbl changesq.cob
+cobc -locesql -x -v -o  run3 changesq.cob
+
+erreur 402, ne trouve pas la base de donnée
+erreur 400, trouve la base de donnée mais ne trouve pas la table
+erreur 212, 
