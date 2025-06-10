@@ -1,11 +1,50 @@
-#COBOL niveau hiérarchique
+# COBOL niveau hiérarchique
 
 01-49: variable de type groupe
 66: zone référencée par plusieurs mémoire(RENAME)
 77: variable autonome
 88: valeurs conditionelle(flag)
 
-#COBOL arithmétique
+# COBOL linkage section
+
+-programme secondaire
+
+program-id. greeting.
+
+linkage section.
+
+01 LK-nom     PIC X(20).
+01 LK-reponse PIC X(20).
+
+procedure division using LK-nom LK-reponse.
+
+...
+
+END PROGRAM "greeting". *>pas de STOP RUN.
+
+
+-programme principale
+
+program-id. MAIN.
+
+working-storage section.
+
+01 WS-nom     PIC X(20).
+01 WS-reponse PIC X(20).
+
+
+procedure division.
+
+CALL "greeting" using WS-nom WS-reponse.
+display WS-reponse.
+
+STOP RUN.
+
+-compilation
+
+cobc -x -o run main.cbl greeting.cbl 
+
+# COBOL arithmétique
 
 -addition
 
@@ -36,7 +75,7 @@ PIC 9(5)v99  nombre flottant
 PIC S9(5)v99  nombre flottant signé
 
 
-#COBOL CONDITIONS
+# COBOL CONDITIONS
 
 -Faire un IF
 
@@ -76,7 +115,7 @@ Il est à noter qu'il n'y a qu'un "." après le END-EVALUATE et non après chaqu
 WHEN OTHER est utile si aucune autre condition n'est validée
 ON peut mettre autant de WHEN que l'on veux
 
-#COBOL boucle
+# COBOL boucle
 
 -boucle FOR
 
@@ -104,7 +143,7 @@ END-PERFORM.
 Cela fera les instruction tant que la condition est fausse(i LESS THAN 54)
 Il n'y a qu'un "." après le END-PERFORM et non après chaque instructions
 
-#COBOL tableau
+# COBOL tableau
 
 Un tableau de taille 10(avec OCCURS 10). 
 Pour définir un tableau, utilisez 01, 77 ou 88
@@ -121,7 +160,7 @@ Pour définir un tableau, utilisez 01, 77 ou 88
             10    TAB-VER  OCCURS 36.
                   15    TAB-V  PIC XX.
 
-#COBOL paragraphe
+# COBOL paragraphe
 
 Pour utiliser un paragraphe, il faut faire PERFORM NOM-PARAGRAPHE. (le "." est présent après le nom du paragraphe)
 
@@ -130,7 +169,7 @@ Pour utiliser un pararaphe, en précisant le début et la fin du paragraphe
 PERFORM 0100-MOVE-TO-OUTPUT-BEGIN
 THRU 0100-MOVE-TO-OUTPUT-END
 
-#COBOL lire fichier
+# COBOL lire fichier
 
 Il faut commencer par définit un ENVIRONMENT DIVISION de la manière suivante
 
@@ -192,7 +231,32 @@ END-PERFORM.
 les champs F- sont déjà remplis lors du READ FILEDESCRIPTOR
 on peut les mettres dans un tableau par exemple avec un MOVE(si c'est ce que vous voulez faire, vous aurez besoin d'un index à incrémentez par vous-mêmes)
 
-#Git
+
+
+# COBOL écrire dans fichier
+
+FILE SECTION.
+
+FD TRAIN-UNIQUE-OUTPUT.
+       01 TRAIN-UNI-OUT-RECORD.
+           05 TRAIN-UNI-OUT-LINE   PIC X(150).
+           
+           
+PROCEDURE DIVISION.
+
+OPEN OUTPUT TRAIN-UNIQUE-OUTPUT.
+
+MOVE "AAA45" TO TRAIN-UNI-OUT-LINE.
+WRITE TRAIN-UNI-OUT-RECORD.
+
+CLOSE TRAIN-UNIQUE-OUTPUT.
+
+
+il faut remplir les champs de la sortie(ici , il n'y a qu'un champ de sortie qui est TRAIN-UNI-OUT-LINE), ne pas hésitez à les videz si nécessaire 
+avec  MOVE SPACES TO TRAIN-UNI-OUT-LINE
+pour évitez d'écrire plusieurs fois les mêmes informations.
+
+# Git
 
 git init -> créer un repositories (pas forcément vide)
 
@@ -212,7 +276,7 @@ git clone -> créer une copie d'un repositories distant
 
 git remote -> créer, afficher et supprimer des connexions avec d'autre dépôt
 
-#Terminal
+# Terminal
 
 -commande cd: permet de se déplacer dans les dossiers
 
@@ -238,7 +302,7 @@ cp fichierCopier1 fichierCopier2
 mkdir nomDuDossierCreer
 
 
-#SQL
+# SQL
 
 SGBD: système de gestion de base de données est un logiciel système permettant aux utilisateurs et programmeurs de créer et de gérer des bases de données.
 exemple de SGDB: IBM Db2, Oracle DATABASE et Microsoft SQL Server
@@ -286,11 +350,26 @@ sudo -u postgres psql
 
 LA BASE DE DONNEE S'APPELLE coboldatabase
 
+créer un utilisateur:
+
+-sans mot de passe
+CREATE USER nomutilisateur;
+
+-avec mot de passe
+CREATE USER nomutilisateur WITH ENCRYPTED PASSWORD 'password';
+
+CREATE USER lucas WITH ENCRYPTED PASSWORD 'lucas';
 
 créer et se connecter à la database(base de donnée):
 
-CREATE DATABASE NOMdatabase;
+CREATE DATABASE NOMdatabase; --base de donnée accessible par tous le monde
 \c NOMdatabase  -- Se connecter à la base
+
+\c NOMdatabase nomutilisateur  -- se connecter à la base de donnée en tant que nomutilisateur et non plus l'utilisateur par défaut
+
+psql -d database -U username  -- se connecter à la base de donnée en tant que nomutilisateur et non plus l'utilisateur par défaut
+
+CREATE DATABASE NOMdatabase OWNER nomutilisateur; --base de donnée accessible uniquement par nomutilisateur
 
 créer table:
 
@@ -318,6 +397,22 @@ DROP TABLE nomdelatable;
 supprimer une base de donnée:
 
 DROP DATABASE nomdelabasededonnée;
+
+supprimer une ligne:
+
+DELETE FROM `table`
+WHERE condition; --sans condition where, toute la table est effacée
+
+supprimer une colonne:
+
+ALTER TABLE nomTable
+DROP COLUMN nomColonne;
+
+
+
+supprimer un utilisateur:
+
+DROP user nomutilisateur;
 
 
 modifier la base de donnée:
@@ -349,7 +444,7 @@ SET pays = 'FRANCE'
 
 
 
-#Recruteur IT
+# Recruteur IT
 
 etape pour le recruteur
 
