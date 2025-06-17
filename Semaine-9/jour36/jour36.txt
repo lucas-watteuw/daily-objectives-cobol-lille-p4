@@ -1,0 +1,75 @@
+pour lancer ISPF, commande x3270
+aller sur connect, choisir 204.90.115.200:623
+
+ex1:
+commande 6
+TSO PROFILE  ou   PROFILE
+
+ex2:
+commande 3.4
+entrer vide
+dans Dsname Level: Z72247
+mettre un v devant le dataset qu'on veut voir ou VIEW nomDATASET
+bonus:
+SORT NAME
+SORT CREATED
+
+ex3:
+3.2
+mettre SOURCE.COBOL dans NAME, option A
+RECFM: record format à mettre à FB
+LRECL: record length, à mettre à 80
+BLKSIZE: Block size, à mettre à 800
+data set name type: PDS
+
+organization: PO
+
+
+--vrai soluce
+3.4
+ouvrir z.source avec option i
+revenir au 3.2
+créer en gardant toutes les options créer
+
+
+
+ex4:
+2
+chercher SOURCE.COBOL(message "No members in data set")
+aller sur VisualStudioCode créer HELLOCOB.
+
+pas de bonus
+
+ex5:
+3.3
+option => C
+dans Name, mettre SOURCE.COBOL puis entrer
+dans Name, mettre SOURCE.COPIE
+choisir l'option 1 en mettant un 1 devant l'option 1
+devant le HELLOCOB, il y a un ".", le remplacer par un "S" puis entrer
+
+pas de bonus
+
+ex6:
+3.4
+mettre son Zuserid dans Dsname Level puis entrer
+mettre un "D" devant le dataset qu'on veut supprimer puis entrer
+mettre un "R" devant le dataset qu'on veut renommer puis entrer
+
+
+ex7:
+
+7.1:
+2
+name SOURCE.COBOL
+se déplacer sur le '.' et appuyer sur entrer
+remplacer un 0 par un 'i', cela va créer une ligne vide en dessous que l'on peut modifier
+
+7.2:
+remplacer un 0 par un 'D' puis entrer pour supprimer une ligne
+
+
+
+
+
+
