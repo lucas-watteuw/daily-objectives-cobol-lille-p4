@@ -98,21 +98,29 @@ Acquérir les compétences nécessaires pour concevoir, développer, maintenir e
 
 ---
 
-## Semaine 8 : Modularité et environnement mainframe
+## Semaine 8 : Modularité et Cobol
 
-**Thème :** Programmation modulaire et introduction au mainframe
+**Thème :** Programmation modulaire
 
 ### Objectifs pédagogiques
 
 * Organiser le code en sous-programmes réutilisables
 * Passer des paramètres entre programmes et fonctions
 * Appliquer des techniques de test et de débogage
+
+---
+
+## Semaine 9 : Environnement mainframe
+
+**Thème :** Introduction au mainframe
+
+### Objectifs pédagogiques
+
 * Comprendre l'architecture d’un mainframe et ses composants
 * Découvrir les outils principaux : TSO/ISPF, JCL, datasets
 * Écrire et exécuter des jobs JCL simples
 * Simuler un environnement mainframe pour l'exécution COBOL
 * Intégrer la gestion des erreurs métier et techniques
-
 ---
 
 ## Résultats attendus à la fin de la formation
